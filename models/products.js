@@ -44,6 +44,11 @@ module.exports = (sequelize, DataTypes) => {
                 allowNull: false, // NOT NULL
                 type: DataTypes.STRING,
             },
+            status: {
+                allowNull: false, // NOT NULL
+                type: DataTypes.STRING,
+                defaultValue: "FOR_SALE",
+            },
             createdAt: {
                 allowNull: false, // NOT NULL
                 type: DataTypes.DATE,
