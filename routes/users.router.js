@@ -5,7 +5,7 @@ const { Users } = require("../models");
 const router = express.Router();
 
 // user 생성
-router.post("/users", async (req, res) => {
+router.post("/users/signup", async (req, res) => {
     console.log(req.body);
     const { email, password, username } = req.body;
     console.log(email, password, username);
@@ -29,7 +29,7 @@ router.post("/login", async (req, res) => {
 
     if (!user) {
         return res.status(401).json({ message: "존재하지 않는 이메일입니다." });
-    } else if (Number(user.password) !== password) {
+    } else if (user.password !== String(password)) {
         return res
             .status(401)
             .json({ message: "비밀번호가 일치하지 않습니다." });
@@ -37,8 +37,6 @@ router.post("/login", async (req, res) => {
 
     return res.status(200).json({ message: "로그인 성공" });
 });
-
-module.exports = router;
 
 // read user info
 router.get("/users/:userId", async (req, res) => {
@@ -49,3 +47,5 @@ router.get("/users/:userId", async (req, res) => {
     });
     return res.status(200).json({ data: user });
 });
+
+module.exports = router;
