@@ -75,4 +75,24 @@ router.get("/products/:productId", async (req, res) => {
     return res.status(200).json({ data: product });
 });
 
+// 상품 수정
+
+// 상품 삭제
+router.delete("/products/:productId", async (req, res) => {
+    const { productId } = req.params;
+
+    const product = await Products.findOne({ where: { productId } });
+
+    if (!product) {
+        return res.status(404), json({ message: "상품이 존재하지 않습니다." });
+    }
+    //  else if (product.UserId !== userId) {
+    //     return res.status(401).json({ messgae: "권한이 없습니다." });
+    // }
+
+    await Products.destroy({ where: { productId } });
+
+    return res.status(200).json({ data: "상품이 삭제되었습니다." });
+});
+
 module.exports = router;
