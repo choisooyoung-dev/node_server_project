@@ -5,7 +5,7 @@ const router = express.Router();
 // 상품 글 생성
 router.post("/products/new", async (req, res) => {
     // const { userId } = res.locals.user;
-    const { title, content, price } = req.body;
+    const { title, content, price, status } = req.body;
 
     const product = await Products.create({
         UserId: 2,
@@ -13,6 +13,7 @@ router.post("/products/new", async (req, res) => {
         title,
         content,
         price,
+        status,
     });
 
     return res.status(201).json({ data: product });
@@ -23,7 +24,7 @@ router.get("/products", async (req, res) => {
     // 상품, 사용자 join
     const products = await Products.findAll({
         attributes: {
-            indlcudes: [
+            includes: [
                 "productId",
                 "title",
                 "content",
@@ -31,12 +32,13 @@ router.get("/products", async (req, res) => {
                 "price",
                 "createdAt",
                 "updatedAt",
+                [sequelize.col("User.name"), "username"],
             ],
         },
         include: [
             {
                 model: Users,
-                attributes: ["username"],
+                attributes: [],
             },
         ],
     });
@@ -52,7 +54,7 @@ router.get("/products/:productId", async (req, res) => {
     // 상품, 사용자 join
     const product = await Products.findOne({
         attributes: {
-            indlcudes: [
+            includes: [
                 "productId",
                 "title",
                 "content",
@@ -76,6 +78,23 @@ router.get("/products/:productId", async (req, res) => {
 });
 
 // 상품 수정
+router.put("/products/:productId", async (req, res) => {
+    const { productId } = req.params;
+    const { title, content, price, status } = req.body;
+
+    const product = await Products.findOne({ where: { productId } });
+    if (!product) {
+        return (
+            res.status(404), json({ message: "상품 조회에 실패하였습니다." })
+        );
+    }
+
+    await Products.update(
+        { title, content, price, status },
+        { where: { productId } }
+    );
+    return res.status(201).json({ data: product });
+});
 
 // 상품 삭제
 router.delete("/products/:productId", async (req, res) => {
@@ -90,6 +109,7 @@ router.delete("/products/:productId", async (req, res) => {
     //     return res.status(401).json({ messgae: "권한이 없습니다." });
     // }
 
+    // 삭제
     await Products.destroy({ where: { productId } });
 
     return res.status(200).json({ data: "상품이 삭제되었습니다." });
