@@ -22,7 +22,6 @@ app.use(express.json());
 app.use(cookieParser());
 app.use(express.urlencoded({ extended: false })); // uri 파싱
 app.use("/api", [usersRouter, productsRouter]);
-// app.use("/api/products", [productsRouter])
 
 // 서버 실행
 app.listen(app.get("port"), () => {

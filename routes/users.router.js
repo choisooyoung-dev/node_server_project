@@ -68,25 +68,27 @@ router.post("/login", async (req, res) => {
         process.env.TOKEN_KEY,
         { expiresIn: "12h" } // 만료시간 12시간
     );
-    console.log(user);
+    // console.log(user);
     res.cookie("authorization", `Bearer ${token}`);
-    console.log(req.cookies);
 
     return res.status(200).json({ message: "로그인 성공" });
 });
 
 // read user detail
 router.get("/users/:userId", authMiddleware, async (req, res) => {
-    if (!user) {
-        return res.status(400).json({ message: "인증되지 않은 사용자입니다." });
-    }
-
-    const { userId } = req.params;
-    // const { userId } = res.locals.user;
+    const paramUserId = req.params.userId;
+    const { userId } = res.locals.user;
+    console.log(req.cookies);
     const user = await Users.findOne({
         attributes: ["userId", "email", "username"],
         where: { userId },
     });
+
+    // console.log(paramUserId, userId);
+    if (Number(paramUserId) !== userId) {
+        return res.status(400).json({ message: "인증되지 않은 사용자입니다." });
+    }
+
     return res.status(200).json({ data: user });
 });
 
