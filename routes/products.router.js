@@ -1,8 +1,10 @@
 const express = require("express");
-const { Users, Products, sequelize } = require("../models");
 const authMiddleware = require("../middlewares/auth-middleware");
-const { Op } = require("sequelize");
+// const querystring = require("query-string");
+const url = require("url");
 const router = express.Router();
+const { Users, Products, sequelize } = require("../models");
+const { Op } = require("sequelize");
 
 // 상품 글 생성
 router.post("/products/new", authMiddleware, async (req, res) => {
@@ -23,6 +25,25 @@ router.post("/products/new", authMiddleware, async (req, res) => {
 
 // 상품 글 목록 조회
 router.get("/products", async (req, res) => {
+    // url querystring
+    let getUrl = req.url;
+    let queryData = url.parse(getUrl, true).query;
+    // console.log(getUrl);
+    console.log(typeof queryData);
+    // console.log(queryData.sort);
+
+    let strQueryData = String(queryData.sort);
+
+    let sortWord = "DESC";
+
+    if (strQueryData.toLowerCase() === "asc") {
+        sortWord = "ASC";
+    } else if (strQueryData.toLowerCase() === "desc" || strQueryData === null) {
+        sortWord = "DESC";
+    } else {
+        return res.status(400).json({ message: "잘못된 경로입니다." });
+    }
+
     // 상품, 사용자 join
     const products = await Products.findAll({
         attributes: [
@@ -41,6 +62,7 @@ router.get("/products", async (req, res) => {
                 attributes: [],
             },
         ],
+        order: [["createdAt", sortWord]],
     });
 
     //console.log(products);
