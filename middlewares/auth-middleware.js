@@ -21,6 +21,7 @@ module.exports = async (req, res, next) => {
                 .status(401)
                 .json({ message: "토큰 사용자가 존재하지 않습니다." });
         }
+        // console.log("res.locals.user => ", res.locals.user);
         res.locals.user = user;
         next();
     } catch (error) {
