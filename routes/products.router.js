@@ -26,25 +26,29 @@ router.post("/products/new", authMiddleware, async (req, res) => {
 // 상품 글 목록 조회
 router.get("/products", async (req, res) => {
     // url querystring
-    let getUrl = req.url;
-    let queryData = url.parse(getUrl, true).query;
-    // console.log(getUrl);
-    console.log(typeof queryData);
-    // console.log(queryData.sort);
+    // console.log(typeof req.query.sort);
+    // let getUrl = req.url;
+    // console.log("getUrl=>", getUrl);
+    // let pathName = url.parse(getUrl, true).pathname;
+    // console.log("pathname => ", url.parse(getUrl, true).path);
+    // let queryData = url.parse(getUrl, true).query;
+    // console.log("querydata => ", queryData);
+    // console.log(typeof queryData);
+    // // console.log(queryData.sort);
 
-    let strQueryData = String(queryData.sort);
+    // let strQueryData = String(queryData.sort);
 
+    let queryData = req.query.sort;
     let sortWord = "DESC";
 
-    if (strQueryData.toLowerCase() === "asc") {
-        sortWord = "ASC";
-    } else if (strQueryData.toLowerCase() === "desc" || strQueryData === null) {
+    if (queryData === undefined || queryData.toLowerCase() === "desc") {
         sortWord = "DESC";
+    } else if (queryData.toLowerCase() === "asc") {
+        sortWord = "ASC";
     } else {
-        return res.status(400).json({ message: "잘못된 경로입니다." });
+        return res.status(400).json({ message: "잘못된 경로 입니다." });
     }
 
-    // 상품, 사용자 join
     const products = await Products.findAll({
         attributes: [
             "productId",
