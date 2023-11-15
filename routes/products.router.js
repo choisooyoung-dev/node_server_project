@@ -12,6 +12,12 @@ router.post("/products/new", authMiddleware, async (req, res) => {
 
     const { title, content, price, status } = req.body;
 
+    if (!title || !content || !price || !status) {
+        return res
+            .status(401)
+            .json({ message: "데이터 형식이 올바르지 않습니다." });
+    }
+
     const product = await Products.create({
         UserId: userId,
         title,
@@ -95,6 +101,12 @@ router.put("/products/:productId", authMiddleware, async (req, res) => {
     const { productId } = req.params;
     const { userId } = res.locals.user;
     const { title, content, price, status } = req.body;
+
+    if (!title || !content || !price || !status || status !== "SOLD_OUT") {
+        return res
+            .status(401)
+            .json({ message: "데이터 형식이 올바르지 않습니다." });
+    }
 
     const product = await Products.findOne({ where: { productId } });
     if (!product) {

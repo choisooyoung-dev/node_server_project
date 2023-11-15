@@ -65,11 +65,11 @@ router.post("/login", async (req, res) => {
             userId: user.userId,
         },
         process.env.TOKEN_KEY,
-        { expiresIn: "5m" } // 만료시간 12시간
+        { expiresIn: "12h" } // 만료시간 12시간
     );
 
     res.cookie("authorization", `Bearer ${token}`);
-    console.log("login=>", req.cookies);
+    // console.log("login=>", req.cookies);
     return res.status(200).json({ message: "로그인 성공" });
 });
 

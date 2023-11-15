@@ -22,7 +22,12 @@ app.use(express.json());
 app.use(cookieParser());
 app.use(express.urlencoded({ extended: false })); // uri 파싱
 app.use("/api", [usersRouter, productsRouter]);
-
+// app.use((err, req, res, next) => {
+//     res.clearCookie("authorization");
+//     res.status(401).json({
+//         message: "로그인이 필요합니다.",
+//     });
+// });
 // 서버 실행
 app.listen(app.get("port"), () => {
     console.log(app.get("port"), "번 포트에서 대기 중");
