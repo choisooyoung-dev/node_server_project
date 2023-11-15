@@ -14,18 +14,18 @@ router.post("/users/signup", async (req, res) => {
     const isExitUser = await Users.findOne({ where: { email } });
 
     if (isExitUser) {
-        return res.status(409).json({ message: "이미 존재하는 이메일입니다." });
+        return res.status(400).json({ message: "이미 존재하는 이메일입니다." });
     }
 
     if (confirmPassword !== password) {
         return res
-            .status(409)
+            .status(400)
             .json({ message: "동일한 비밀번호를 입력해주세요." });
     }
 
     if (password.length <= 5) {
         return res
-            .status(409)
+            .status(400)
             .json({ message: "6자 이상 비밀번호를 입력해주세요." });
     }
 
@@ -39,6 +39,7 @@ router.post("/users/signup", async (req, res) => {
         where: { email },
     });
 
+    // status(201) 클라이언트 요청을 서버가 정상적으로 처리, 새로운 리소스 생김
     return res.status(201).json({ data: user });
 });
 
@@ -48,14 +49,14 @@ router.post("/login", async (req, res) => {
     const user = await Users.findOne({ where: { email } });
 
     if (!user) {
-        return res.status(401).json({ message: "존재하지 않는 이메일입니다." });
+        return res.status(400).json({ message: "존재하지 않는 이메일입니다." });
     }
 
     const check = await bcrypt.compare(password, user.password);
 
     if (!check) {
         return res
-            .status(401)
+            .status(400)
             .json({ message: "비밀번호가 일치하지 않습니다." });
     }
     // 정보 JWT 생성
@@ -76,7 +77,7 @@ router.post("/login", async (req, res) => {
 router.get("/users/:userId", authMiddleware, async (req, res) => {
     const paramUserId = req.params.userId;
     const { userId } = res.locals.user;
-    console.log(req.cookies);
+    // console.log(req.cookies);
     const user = await Users.findOne({
         attributes: ["userId", "email", "username"],
         where: { userId },
@@ -87,7 +88,7 @@ router.get("/users/:userId", authMiddleware, async (req, res) => {
         return res.status(400).json({ message: "인증되지 않은 사용자입니다." });
     }
 
-    return res.status(200).json({ data: user });
+    return res.status(201).json({ data: user });
 });
 
 module.exports = router;
