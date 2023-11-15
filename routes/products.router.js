@@ -58,7 +58,7 @@ router.get("/products", async (req, res) => {
     });
 
     //console.log(products);
-    return res.status(200).json({ data: products });
+    return res.status(201).json({ data: products });
 });
 
 // 상품 상세 조회
@@ -87,7 +87,7 @@ router.get("/products/:productId", async (req, res) => {
     });
 
     // console.log(product);
-    return res.status(200).json({ data: product });
+    return res.status(201).json({ data: product });
 });
 
 // 상품 수정
@@ -128,7 +128,7 @@ router.delete("/products/:productId", authMiddleware, async (req, res) => {
         where: { [Op.and]: [{ productId }, { UserId: userId }] },
     });
 
-    return res.status(200).json({ data: "상품이 삭제되었습니다." });
+    return res.status(200).json({ message: "상품이 삭제되었습니다." });
 });
 
 module.exports = router;
