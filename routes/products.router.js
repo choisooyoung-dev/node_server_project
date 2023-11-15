@@ -26,25 +26,17 @@ router.post("/products/new", authMiddleware, async (req, res) => {
 // 상품 글 목록 조회
 router.get("/products", async (req, res) => {
     // url querystring
-    let getUrl = req.url;
-    let queryData = url.parse(getUrl, true).query;
-    // console.log(getUrl);
-    console.log(typeof queryData);
-    // console.log(queryData.sort);
-
-    let strQueryData = String(queryData.sort);
-
+    const queryData = req.query.sort;
     let sortWord = "DESC";
 
-    if (strQueryData.toLowerCase() === "asc") {
-        sortWord = "ASC";
-    } else if (strQueryData.toLowerCase() === "desc" || strQueryData === null) {
+    if (queryData === undefined || queryData.toLowerCase() === "desc") {
         sortWord = "DESC";
+    } else if (queryData.toLowerCase() === "asc") {
+        sortWord = "ASC";
     } else {
-        return res.status(400).json({ message: "잘못된 경로입니다." });
+        return res.status(400).json({ message: "잘못된 경로 입니다." });
     }
 
-    // 상품, 사용자 join
     const products = await Products.findAll({
         attributes: [
             "productId",
@@ -126,7 +118,7 @@ router.delete("/products/:productId", authMiddleware, async (req, res) => {
     const product = await Products.findOne({ where: { productId } });
 
     if (!product) {
-        return res.status(404), json({ message: "상품이 존재하지 않습니다." });
+        return res.status(404).json({ message: "상품이 존재하지 않습니다." });
     } else if (product.UserId !== userId) {
         return res.status(401).json({ message: "권한이 없습니다." });
     }
