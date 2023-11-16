@@ -12,6 +12,12 @@ router.post("/products/new", authMiddleware, async (req, res) => {
 
     const { title, content, price, status } = req.body;
 
+    if (!title || !content || !price || !status) {
+        return res
+            .status(401)
+            .json({ message: "데이터 형식이 올바르지 않습니다." });
+    }
+
     const product = await Products.create({
         UserId: userId,
         title,
@@ -57,6 +63,10 @@ router.get("/products", async (req, res) => {
         order: [["createdAt", sortWord]],
     });
 
+    if (!products) {
+        return res.status(400).json({ message: "상품이 존재하지 않습니다." });
+    }
+
     //console.log(products);
     return res.status(201).json({ data: products });
 });
@@ -86,6 +96,10 @@ router.get("/products/:productId", async (req, res) => {
         where: { productId },
     });
 
+    if (!product) {
+        return res.status(400).json({ message: "상품이 존재하지 않습니다." });
+    }
+
     // console.log(product);
     return res.status(201).json({ data: product });
 });
@@ -96,11 +110,17 @@ router.put("/products/:productId", authMiddleware, async (req, res) => {
     const { userId } = res.locals.user;
     const { title, content, price, status } = req.body;
 
+    if (!title || !content || !price || !status || status !== "SOLD_OUT") {
+        return res
+            .status(401)
+            .json({ message: "데이터 형식이 올바르지 않습니다." });
+    }
+
     const product = await Products.findOne({ where: { productId } });
     if (!product) {
         return res.status(404).json({ message: "상품 조회에 실패하였습니다." });
     } else if (product.UserId !== userId) {
-        return res.status(401).json({ messgae: "권한이 없습니다." });
+        return res.status(401).json({ message: "권한이 없습니다." });
     }
 
     const updateProduct = { title, content, price, status };
