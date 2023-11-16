@@ -12,10 +12,13 @@ router.post("/users/signup", async (req, res) => {
     const { email, password, username, confirmPassword } = req.body;
     // console.log(email, password, username);
     const isExitUser = await Users.findOne({ where: { email } });
+    const isExitUsername = await Users.findOne({ where: { username } });
 
-    if (isExitUser) {
+    if (isExitUser)
         return res.status(400).json({ message: "이미 존재하는 이메일입니다." });
-    }
+
+    if (isExitUsername)
+        return res.status(400).json({ message: "이미 존재하는 닉네임입니다." });
 
     if (confirmPassword !== password) {
         return res
