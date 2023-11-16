@@ -4,7 +4,7 @@
 
 1.  **API 명세서 작성**
 
--   [API 명세서 링크](API_DOCUMENTATION_URL)
+-   [API 명세서 링크](https://roasted-crush-68f.notion.site/API-c4670adf7f7445d0971d75a227b31946?pvs=4)
 
 <br  />
 
