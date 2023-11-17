@@ -25,7 +25,6 @@ module.exports = (sequelize, DataTypes) => {
                 autoIncrement: true, // AUTO_INCREMENT
                 primaryKey: true, // Primary Key (기본키)
                 type: DataTypes.INTEGER,
-                unique: true,
             },
             email: {
                 allowNull: false, // NOT NULL
