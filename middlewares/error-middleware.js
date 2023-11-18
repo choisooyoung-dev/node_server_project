@@ -33,6 +33,25 @@ const ErrorHandler = (err, req, res, next) => {
     // SIGNUP
 
     if (req.route.path === "/users/signup") {
+        // if (err.name === "ValidationError") {
+        //     res.status(412);
+        //     if (err.details[0].path[0] === "email") {
+        //         return res.json({ message: "이메일을 작성해주세요." });
+        //     }
+        //     if (err.details[0].path[0] === "password") {
+        //         return res.json({
+        //             message: "비밀번호를 6자 이상 작성해주세요.",
+        //         });
+        //     }
+        //     if (err.details[0].path[0] === "username") {
+        //         return res.json({ message: "닉네임을 작성해주세요." });
+        //     }
+        //     if (err.details[0].path[0] === "confirmPassword") {
+        //         return res.json({
+        //             message: "비밀번호와 동일한 비밀번호를 작성해주세요.",
+        //         });
+        //     }
+        // }
         // console.log(err);
         if (err.name === "EmailExistError")
             return res
@@ -48,11 +67,6 @@ const ErrorHandler = (err, req, res, next) => {
             return res
                 .status(400)
                 .json({ message: "동일한 비밀번호를 입력해주세요." });
-
-        if (err.name === "PasswordLengthError")
-            return res
-                .status(400)
-                .json({ message: "6자 이상 비밀번호를 입력해주세요." });
     }
 
     // ------------------------------------------------------------------------------
@@ -96,6 +110,22 @@ const ErrorHandler = (err, req, res, next) => {
                 .status(401)
                 .json({ message: "데이터 형식이 올바르지 않습니다." });
         }
+
+        if (err.name === "ValidationError") {
+            res.status(412);
+            if (err.details[0].path[0] === "title") {
+                return res.json({ message: "제목을 작성해주세요." });
+            }
+            if (err.details[0].path[0] === "content") {
+                return res.json({ message: "내용을 작성해주세요." });
+            }
+            if (err.details[0].path[0] === "price") {
+                return res.json({ message: "가격을 작성해주세요." });
+            }
+            if (err.details[0].path[0] === "status") {
+                return res.json({ message: "상품 판매 상태를 작성해주세요." });
+            }
+        }
     }
 
     // READ
@@ -131,6 +161,24 @@ const ErrorHandler = (err, req, res, next) => {
                 return res
                     .status(400)
                     .json({ message: "인증되지 않은 사용자 입니다." });
+            }
+
+            if (err.name === "ValidationError") {
+                res.status(412);
+                if (err.details[0].path[0] === "title") {
+                    return res.json({ message: "제목을 작성해주세요." });
+                }
+                if (err.details[0].path[0] === "content") {
+                    return res.json({ message: "내용을 작성해주세요." });
+                }
+                if (err.details[0].path[0] === "price") {
+                    return res.json({ message: "가격을 작성해주세요." });
+                }
+                if (err.details[0].path[0] === "status") {
+                    return res.json({
+                        message: "상품 판매 상태를 작성해주세요.",
+                    });
+                }
             }
         }
 

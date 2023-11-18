@@ -5,23 +5,25 @@ const { Users, Products, sequelize } = require("../models");
 const { Op } = require("sequelize");
 const {
     ProductsNotExistError,
-    QuerySyntaxError,
+
     WrongPathError,
     ProductNotExistError,
     UnauthUserError,
 } = require("../lib/error-lists");
+const { productSchemaValidation } = require("../lib/ProductJoiSchema");
 
 // 상품 글 생성
 router.post("/products/new", authMiddleware, async (req, res, next) => {
     try {
         const { userId } = res.locals.user;
 
-        const { title, content, price, status } = req.body;
+        const { title, content, price, status } =
+            await productSchemaValidation.validateAsync(req.body);
 
-        if (!title || !content || price <= 0 || !status) {
-            const error = new QuerySyntaxError();
-            throw error;
-        }
+        // if (!title || !content || price <= 0 || !status) {
+        //     const error = new QuerySyntaxError();
+        //     throw error;
+        // }
 
         const product = await Products.create({
             UserId: userId,
@@ -128,18 +130,20 @@ router.put("/products/:productId", authMiddleware, async (req, res, next) => {
     try {
         const { productId } = req.params;
         const { userId } = res.locals.user;
-        const { title, content, price, status } = req.body;
 
-        if (
-            !title ||
-            !content ||
-            price <= 0 ||
-            !status ||
-            status !== "SOLD_OUT"
-        ) {
-            const error = new QuerySyntaxError();
-            throw error;
-        }
+        const { title, content, price, status } =
+            await productSchemaValidation.validateAsync(req.body);
+
+        // if (
+        //     !title ||
+        //     !content ||
+        //     price <= 0 ||
+        //     !status ||
+        //     status !== "SOLD_OUT"
+        // ) {
+        //     const error = new QuerySyntaxError();
+        //     throw error;
+        // }
 
         const product = await Products.findOne({ where: { productId } });
         if (!product) {
