@@ -8,17 +8,21 @@ const router = express.Router();
 const {
     EmailExistError,
     UsernameExistError,
-    ConfirmPasswordMismatchError,
-    PasswordLengthError,
     EmailNotExistError,
     PasswordMismatchError,
     UnauthUserError,
 } = require("../lib/error-lists");
+const {
+    userSchemaValidation,
+    userLoginSchemaValidation,
+} = require("../lib/schema-validation");
 
 // user 생성
 router.post("/users/signup", async (req, res, next) => {
     try {
-        const { email, password, username, confirmPassword } = req.body;
+        // const { email, password, username, confirmPassword } = req.body;
+        const { email, password, username, confirmPassword } =
+            await userSchemaValidation.validateAsync(req.body);
         const isExitUser = await Users.findOne({ where: { email } });
         const isExitUsername = await Users.findOne({ where: { username } });
 
@@ -37,10 +41,10 @@ router.post("/users/signup", async (req, res, next) => {
             throw error;
         }
 
-        if (password.length <= 5) {
-            const error = new PasswordLengthError();
-            throw error;
-        }
+        // if (password.length <= 5) {
+        //     const error = new PasswordLengthError();
+        //     throw error;
+        // }
 
         const salt = await bcrypt.genSalt(12);
 
@@ -63,7 +67,8 @@ router.post("/users/signup", async (req, res, next) => {
 // user login
 router.post("/users/login", async (req, res, next) => {
     try {
-        const { email, password } = req.body;
+        const { email, password } =
+            await userLoginSchemaValidation.validateAsync(req.body);
         const user = await Users.findOne({ where: { email } });
 
         if (!user) {
@@ -114,7 +119,7 @@ router.get("/users/:userId", authMiddleware, async (req, res, next) => {
         const { userId } = res.locals.user;
         // console.log(req.cookies);
         const user = await Users.findOne({
-            attributes: ["userId", "email", "username"],
+            attributes: ["userId", "email", "username", "createdAt"],
             where: { userId },
         });
 
