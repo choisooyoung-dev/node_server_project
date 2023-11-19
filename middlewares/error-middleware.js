@@ -33,25 +33,25 @@ const ErrorHandler = (err, req, res, next) => {
     // SIGNUP
 
     if (req.route.path === "/users/signup") {
-        // if (err.name === "ValidationError") {
-        //     res.status(412);
-        //     if (err.details[0].path[0] === "email") {
-        //         return res.json({ message: "이메일을 작성해주세요." });
-        //     }
-        //     if (err.details[0].path[0] === "password") {
-        //         return res.json({
-        //             message: "비밀번호를 6자 이상 작성해주세요.",
-        //         });
-        //     }
-        //     if (err.details[0].path[0] === "username") {
-        //         return res.json({ message: "닉네임을 작성해주세요." });
-        //     }
-        //     if (err.details[0].path[0] === "confirmPassword") {
-        //         return res.json({
-        //             message: "비밀번호와 동일한 비밀번호를 작성해주세요.",
-        //         });
-        //     }
-        // }
+        if (err.name === "ValidationError") {
+            res.status(412);
+            if (err.details[0].path[0] === "email") {
+                return res.json({ message: "이메일을 작성해주세요." });
+            }
+            if (err.details[0].path[0] === "password") {
+                return res.json({
+                    message: "비밀번호를 6자 이상 작성해주세요.",
+                });
+            }
+            if (err.details[0].path[0] === "username") {
+                return res.json({ message: "닉네임을 작성해주세요." });
+            }
+            if (err.details[0].path[0] === "confirmPassword") {
+                return res.json({
+                    message: "비밀번호와 동일한 비밀번호를 작성해주세요.",
+                });
+            }
+        }
         // console.log(err);
         if (err.name === "EmailExistError")
             return res
@@ -73,6 +73,17 @@ const ErrorHandler = (err, req, res, next) => {
     // LOGIN
 
     if (req.route.path === "/users/login") {
+        if (err.name === "ValidationError") {
+            res.status(412);
+            if (err.details[0].path[0] === "email") {
+                return res.json({ message: "이메일을 작성해주세요." });
+            }
+            if (err.details[0].path[0] === "password") {
+                return res.json({
+                    message: "비밀번호를 6자 이상 작성해주세요.",
+                });
+            }
+        }
         if (err.name === "EmailNotExistError")
             return res
                 .status(400)

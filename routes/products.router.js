@@ -10,7 +10,7 @@ const {
     ProductNotExistError,
     UnauthUserError,
 } = require("../lib/error-lists");
-const { productSchemaValidation } = require("../lib/ProductJoiSchema");
+const { productSchemaValidation } = require("../lib/schema-validation");
 
 // 상품 글 생성
 router.post("/products/new", authMiddleware, async (req, res, next) => {
