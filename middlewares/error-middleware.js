@@ -133,9 +133,6 @@ const ErrorHandler = (err, req, res, next) => {
             if (err.details[0].path[0] === "price") {
                 return res.json({ message: "가격을 작성해주세요." });
             }
-            if (err.details[0].path[0] === "status") {
-                return res.json({ message: "상품 판매 상태를 작성해주세요." });
-            }
         }
     }
 
@@ -187,13 +184,13 @@ const ErrorHandler = (err, req, res, next) => {
                 }
                 if (err.details[0].path[0] === "status") {
                     return res.json({
-                        message: "상품 판매 상태를 작성해주세요.",
+                        message: "FOR_SALE 또는 SOLD_OUT 상태를 작성해주세요",
                     });
                 }
             }
         }
 
-        // UPDATE
+        // DELETE
         if (req.method === "DELETE") {
             if (err.name === "ProductNotExistError") {
                 return res
