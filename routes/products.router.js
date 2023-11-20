@@ -17,7 +17,7 @@ router.post("/products/new", authMiddleware, async (req, res, next) => {
     try {
         const { userId } = res.locals.user;
 
-        const { title, content, price, status } =
+        const { title, content, price } =
             await productSchemaValidation.validateAsync(req.body);
 
         // if (!title || !content || price <= 0 || !status) {
@@ -30,7 +30,6 @@ router.post("/products/new", authMiddleware, async (req, res, next) => {
             title,
             content,
             price,
-            status,
         });
 
         return res.status(201).json({ data: product });
@@ -133,17 +132,6 @@ router.put("/products/:productId", authMiddleware, async (req, res, next) => {
 
         const { title, content, price, status } =
             await productSchemaValidation.validateAsync(req.body);
-
-        // if (
-        //     !title ||
-        //     !content ||
-        //     price <= 0 ||
-        //     !status ||
-        //     status !== "SOLD_OUT"
-        // ) {
-        //     const error = new QuerySyntaxError();
-        //     throw error;
-        // }
 
         const product = await Products.findOne({ where: { productId } });
         if (!product) {
