@@ -68,7 +68,7 @@
      ┣ 📜error-lists.js
      ┗ 📜schema-validation.js
 
-   📦middlewares
+    📦middlewares
      ┣ 📜auth-middleware.js
      ┗ 📜error-middleware.js
 
