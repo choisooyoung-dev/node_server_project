@@ -193,7 +193,7 @@ const ErrorHandler = (err, req, res, next) => {
             }
         }
 
-        // UPDATE
+        // DELETE
         if (req.method === "DELETE") {
             if (err.name === "ProductNotExistError") {
                 return res
