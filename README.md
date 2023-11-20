@@ -61,29 +61,29 @@
 
     ```bash
 
-    📦config
-    ┗  📜config.js
-
-    📦lib
-     ┣ 📜error-lists.js
-     ┗ 📜schema-validation.js
-
-    📦middlewares
-     ┣ 📜auth-middleware.js
-     ┗ 📜error-middleware.js
-
-    📦migrations
-    ┣  📜20231112094443-create-users.js
-    ┗  📜20231112094519-create-products.js
-
-    📦models
-    ┣  📜index.js
-    ┣  📜products.js
-    ┗  📜users.js
-
-    📦routes
-    ┣  📜products.router.js
-    ┗  📜users.router.js
+        📦config
+        ┗  📜config.js
+    
+        📦lib
+         ┣ 📜error-lists.js
+         ┗ 📜schema-validation.js
+    
+        📦middlewares
+         ┣ 📜auth-middleware.js
+         ┗ 📜error-middleware.js
+    
+        📦migrations
+        ┣  📜20231112094443-create-users.js
+        ┗  📜20231112094519-create-products.js
+    
+        📦models
+        ┣  📜index.js
+        ┣  📜products.js
+        ┗  📜users.js
+    
+        📦routes
+        ┣  📜products.router.js
+        ┗  📜users.router.js
 
     ```
 
