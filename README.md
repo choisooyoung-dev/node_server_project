@@ -1,4 +1,7 @@
 # node_server_project
+- [프로젝트 링크](http://s00.shop:3000/api/products)
+- [프로젝트 링크 상품 최신순 정렬(기본값)](http://s00.shop:3000/api/products?sort=desc)
+- [프로젝트 링크 상품 등록순 정렬](http://s00.shop:3000/api/products?sort=asc)
 
 ## 프로젝트 개요
 
